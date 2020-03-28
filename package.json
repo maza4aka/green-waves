@@ -1,0 +1,21 @@
+{
+  "name": "green-waves",
+  "version": "0.0.0",
+  "description": "'Green Wave' concept app",
+  "main": "green-waves.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maza4aka/green-waves.git"
+  },
+  "homepage": "https://github.com/maza4aka/green-waves",
+  "keywords": [],
+  "author": "Anton Yasnov <maza4aka@icloud.com> (https://t.me/maza4aka_ay)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maza4aka/green-waves/issues",
+    "email": "maza4aka.ay@gmail.com"
+  }
+}
