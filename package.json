@@ -11,7 +11,10 @@
     "url": "https://github.com/maza4aka/green-waves.git"
   },
   "homepage": "https://github.com/maza4aka/green-waves",
-  "keywords": [],
+  "keywords": [
+    "green-waves",
+    "concept"
+  ],
   "author": "Anton Yasnov <maza4aka@icloud.com> (https://t.me/maza4aka_ay)",
   "license": "MIT",
   "bugs": {
