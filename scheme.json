@@ -1,0 +1,13 @@
+{
+	"devices": {
+		"vehicles" : {
+			"ambulance0": [
+				{
+					"lat" : 0,
+					"lon" : 0,
+					"spd" : 0
+				}
+			]
+		}
+	}
+}
