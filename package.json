@@ -4,6 +4,7 @@
   "description": "'Green Wave' concept app",
   "main": "green-waves.js",
   "dependencies": {
+    "firebase-admin": "^8.11.0",
     "ws": "^7.2.5"
   },
   "scripts": {
