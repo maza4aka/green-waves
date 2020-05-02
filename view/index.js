@@ -4,6 +4,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+
+/* interaction with server */
+
 const socket = new WebSocket("ws://" + window.location.hostname);
 
 socket.onopen = function connection(event) {
@@ -12,6 +15,8 @@ socket.onopen = function connection(event) {
 
 socket.onmessage = function incoming(event) {
 	console.log(`[server] incoming message: ${JSON.stringify(event)}.`);
+
+	console.log(JSON.parse(event.data)); // TODO
 };
 
 socket.onerror = function connection(event) {
