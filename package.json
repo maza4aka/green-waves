@@ -1,8 +1,11 @@
 {
   "name": "green-waves",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "'Green Wave' concept app",
   "main": "green-waves.js",
+  "dependencies": {
+    "ws": "^7.2.5"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
