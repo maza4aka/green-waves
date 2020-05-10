@@ -19,6 +19,10 @@ const config = {
 
 /* http, ws, routing, resources, etc. */
 
+const assets = {
+	test_vehicle: fs.readFileSync('view/assets/test_vehicle.gif')
+}
+
 // const favicon = fs.readFileSync('../favicon.png');
 
 const index = {
@@ -44,6 +48,11 @@ const server = http.createServer((req, res) => {
 			res.setHeader('Content-Type', 'text/javascript');
 			res.end(index.js);
 			break;
+		case '/assets/test_vehicle.gif':
+			res.statusCode = 200;
+			res.setHeader('Content-Type', 'image/gif');
+			res.end(assets.test_vehicle);
+			break;
 		default:
 			res.statusCode = 404;
 			res.setHeader('Content-Type', 'text/plain');
@@ -61,32 +70,32 @@ socket.on('connection', function connection(ws, req) {
 	console.log(`[ws] client connected: ${client}.`);
 
 	ws.on('open', () => {
-		console.log(`[ws] connection with ${client} established!`);
+		console.info(`[ws] connection with ${client} established!`);
 	});
 
 	ws.on('error', (error) => {
-		console.log(`[ws] client from ${client} encountered error: ${JSON.stringify(error)}...`);
+		console.info(`[ws] client from ${client} encountered error: ${JSON.stringify(error)}...`);
 	});
 
 	ws.on('close', (code, reason) => {
-		console.log(`[ws] client from ${client} closed connection: code: ${code}, reason: ${reason}.`);
+		console.info(`[ws] client from ${client} closed connection: code: ${code}, reason: ${reason}.`);
 	});
 });
 
 server.on('error', err => {
 	if (err.code === 'EACCESS') {
-		console.log(`[http] no access to port ${config.port}!`);
+		console.error(`[http] no access to port ${config.port}!`);
 	} else {
-		console.log(`[http] unknown error: ${JSON.stringify(err)}.`);
+		console.error(`[http] unknown error: ${JSON.stringify(err)}.`);
 	}
 });
 
 socket.on('error', err => {
-	console.log(`[ws] unknown error: ${JSON.stringify(err)}.`);
+	console.error(`[ws] unknown error: ${JSON.stringify(err)}.`);
 });
 
 server.listen(config.port, () => {
-	console.log(`[http] listening on port ${config.port}...`);
+	console.info(`[http] listening on port ${config.port}...`);
 });
 
 
@@ -100,12 +109,12 @@ firebase.initializeApp({
 let db = firebase.database()
 	.ref("devices/vehicles");
 
-let vehicles = new Map();
+let vehicles = {};
 
 db.on('child_added', function(snapshot) {
 	const vehicle = snapshot.key;
 
-	if (vehicle in vehicles)
+	if (vehicles[vehicle])
 		return;
 
 	let telemetry = db.child(vehicle);
@@ -121,5 +130,5 @@ db.on('child_added', function(snapshot) {
 		});
 	});
 
-	vehicles.set(vehicle, telemetry);
+	vehicles[vehicle] = telemetry;
 });
