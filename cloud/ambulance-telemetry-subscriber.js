@@ -9,7 +9,7 @@ firebase.initializeApp({
   databaseURL: "https://green-wave-dummy.firebaseio.com"
 });
 
-exports.ambulance_telemetry_writer = async (event, context) => {
+exports.ambulance_telemetry_writer = (event, context) => {
   console.log("waking up...");
 
   const pubsubMessage = event.data;
@@ -26,6 +26,6 @@ exports.ambulance_telemetry_writer = async (event, context) => {
   const base = firebase.database().ref('devices/vehicles').child(vehicleID);
   
   console.log(`writing data for ${vehicleID}: ${JSON.stringify(payloadJSON)}`);
-  await base.push(payloadJSON);
+  base.push(payloadJSON);
 };
 
