@@ -16,7 +16,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void on_publish_clicked();
+    void on_submit_clicked();
+    void on_send_clicked();
 private:
     Ui::MainWindow *ui;
     MqttSimulator ms;

@@ -17,26 +17,37 @@ MqttSimulator::~MqttSimulator()
 
 void MqttSimulator::on_connect()
 {
-    (*log)->append("Connected!\n");
-    (*log)->append("Status: " + QString::number(client.state()) + "\n");
+    LOG("Connected!\n");
+    LOG("Status: " + QString::number(client.state()) + "\n");
 
-    QJsonDocument payload = QJsonDocument::fromJson(data.toUtf8());
-    QMqttTopicName topic = QMqttTopicName("/devices/ambulance0/events");
-
-    (*log)->append("Sending data: " + payload.toJson() + "...");
-
-    client.publish(topic, payload.toJson(), 1);
-    (*log)->append("sent!\n");
-
-    client.disconnectFromHost();
-    (*log)->append("Disconnected...\n");
+    topic = QMqttTopicName("/devices/ambulance0/events");
 }
 
-void MqttSimulator::publish_data(QByteArray jwt, QString data, QString root_ca)
+bool MqttSimulator::send_next_data()
+{
+    LOG("Sending data: " + data.first());
+
+    client.publish(topic, data.first().toUtf8(), 0, false);
+    LOG("...sent!\n");
+
+    data.pop_front();
+    if (!data.count()) {
+        LOG("Done!\n");
+
+        client.disconnectFromHost();
+        LOG("Disconnected...\n");
+    } else {
+        LOG("Remaining data count: " + QString::number(data.count()) + "\n");
+    }
+
+    return data.size();
+}
+
+void MqttSimulator::connect_mqtt(QByteArray jwt, QString data, QString root_ca)
 {
     sslConf.setCaCertificates(QSslCertificate::fromPath(root_ca));
 
-    this->data = data;
+    this->data = data.split(';');
 
     client.setPassword(jwt);
     client.connectToHostEncrypted(sslConf);

@@ -15,8 +15,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_publish_clicked()
+void MainWindow::on_send_clicked()
 {
+    ui->send->setEnabled(ms.send_next_data());
+
+    if (!ui->send->isEnabled()) {
+        ui->submit->setEnabled(true);
+        ui->jsonInputArea->setEnabled(true);
+    }
+}
+
+void MainWindow::on_submit_clicked()
+{
+    ui->submit->setEnabled(false);
+    ui->jsonInputArea->setEnabled(false);
+
     ms.setClient("projects/" + ui->project_id_string->text().trimmed()
                + "/locations/" + ui->region_string->text().trimmed()
                + "/registries/" + ui->registry_id_string->text().trimmed()
@@ -24,10 +37,12 @@ void MainWindow::on_publish_clicked()
                  );
     ms.setHost(ui->broker_url_string->text().trimmed());
 
-    ms.publish_data(ms.createJWT(
+    ms.connect_mqtt(ms.createJWT(
                         ui->interpreter_path->text(),
                         ui->arguments_string->text().split(' ')),
                     ui->jsonInputArea->toPlainText(),
                     ui->root_ca_path->text()
                     );
+
+    ui->send->setEnabled(true);
 }

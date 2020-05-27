@@ -18,9 +18,9 @@
     <item>
      <layout class="QVBoxLayout" name="controllArea">
       <item>
-       <widget class="QPushButton" name="publish">
+       <widget class="QPushButton" name="submit">
         <property name="text">
-         <string>Send payload</string>
+         <string>Submit payload</string>
         </property>
        </widget>
       </item>
@@ -345,6 +345,16 @@
        </layout>
       </item>
       <item>
+       <widget class="QPushButton" name="send">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Send next</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QTextBrowser" name="console">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
@@ -404,6 +414,18 @@
 	&quot;lat&quot;: 69,
 	&quot;lon&quot;: 69,
 	&quot;spd&quot;: 69
+};
+{
+	&quot;id&quot;: &quot;ambulance69&quot;,
+	&quot;lat&quot;: 69,
+	&quot;lon&quot;: 69,
+	&quot;spd&quot;: 69
+};
+{
+	&quot;id&quot;: &quot;ambulance69&quot;,
+	&quot;lat&quot;: 69,
+	&quot;lon&quot;: 69,
+	&quot;spd&quot;: 69
 }</string>
         </property>
        </widget>
@@ -422,7 +444,7 @@
   <tabstop>registry_id_string</tabstop>
   <tabstop>device_id_string</tabstop>
   <tabstop>broker_url_string</tabstop>
-  <tabstop>publish</tabstop>
+  <tabstop>submit</tabstop>
   <tabstop>console</tabstop>
  </tabstops>
  <resources/>

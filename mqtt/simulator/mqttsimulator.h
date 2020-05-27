@@ -14,8 +14,11 @@ public:
     explicit MqttSimulator(QTextBrowser **log, QObject *parent = nullptr);
     ~MqttSimulator();
 
-    void publish_data(QByteArray jwt, QString data, QString root_ca);
+    void connect_mqtt(QByteArray jwt, QString data, QString root_ca);
+    bool send_next_data();
+
     QByteArray createJWT(QString interpreter, QStringList arguments);
+
     void setHost(QString name);
     void setClient(QString id);
 
@@ -23,11 +26,14 @@ public:
 private:
     QMqttClient client;
 
+    QMqttTopicName topic;
     QSslConfiguration sslConf;
     QTextBrowser **log;
     QProcess script;
 
-    QString data;
+    QStringList data;
 };
+
+#define LOG( args ) (*log)->append(args)
 
 #endif // MQTTSIMULATOR_H
