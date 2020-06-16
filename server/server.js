@@ -129,7 +129,13 @@ setInterval(function() {
 }, 13*1000)
 
 function distance(_light, _vehicle) {
-	// TODO measure distance between vehicle and light
+	let R = 6378.137
+    let dLat = _light.lat * Math.PI / 180 - _vehicle.lat * Math.PI / 180
+    let dLon = _light.lon * Math.PI / 180 - _vehicle.lon * Math.PI / 180
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(_vehicle.lat * Math.PI / 180) * Math.cos(_lights.lat * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    let d = R * c
+    return d * 1000
 }
 
 db.on('child_added', function(snapshot) {
