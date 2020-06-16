@@ -111,6 +111,27 @@ let db = firebase.database()
 
 let vehicles = {};
 
+let lights = require('../lights.json');
+
+setInterval(function() {
+	for light in lights {
+		if (light.active) {
+			light.state = !light.state
+		}
+	}
+
+	socket.clients.forEach(client => {
+		clent.send(JSON.stringify({
+			type: "light",
+			data: light
+		}))
+	})
+}, 13*1000)
+
+function distance(_light, _vehicle) {
+	// TODO measure distance between vehicle and light
+}
+
 db.on('child_added', function(snapshot) {
 	const vehicle = snapshot.key;
 
@@ -122,10 +143,22 @@ db.on('child_added', function(snapshot) {
 	telemetry.on('child_added', function(snapshot) {
 		console.log(`[firebase] new data for '${vehicle}': ${JSON.stringify(snapshot.val())}.`);
 
+		for light in lights {
+			if (distance(light, snapshot.toJSON()) < 88) {
+				light.state = true
+				light.active = false
+			} else {
+				light.active = true
+			}
+		}
+
 		socket.clients.forEach(client => {
-			client.send(JSON.stringify({
-				id: vehicle,
-				telemetry: snapshot.toJSON()
+			client.send(JSON.stringify(
+				type: "telemetry",
+				data: {
+					id: vehicle,
+					telemetry: snapshot.toJSON()
+				}
 			}));
 		});
 	});
