@@ -114,11 +114,12 @@ let vehicles = {};
 let lights = require('../lights.json');
 
 setInterval(function() {
-	for (let light in lights.values()) {
-		if (light.active) {
-			light.state = !light.state
+	lights.forEach(light => {
+			if (light.active) {
+				light.state = !light.state
+			}
 		}
-	}
+	)
 
 	socket.clients.forEach(client => {
 		lights.forEach(light => {
