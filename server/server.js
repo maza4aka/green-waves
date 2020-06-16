@@ -20,9 +20,9 @@ const config = {
 /* http, ws, routing, resources, etc. */
 
 const assets = {
-	test_vehicle: fs.readFileSync('view/assets/test_vehicle.gif');
-    green_light: fs.readFileSync('view/assets/green-light.png');
-    red_light: fs.readFileSync('view/assets/red-light.png');
+	test_vehicle: fs.readFileSync('view/assets/test_vehicle.gif'),
+    green_light: fs.readFileSync('view/assets/green-light.png'),
+    red_light: fs.readFileSync('view/assets/red-light.png')
 }
 
 // const favicon = fs.readFileSync('../favicon.png');
@@ -170,14 +170,21 @@ db.on('child_added', function(snapshot) {
 	telemetry.on('child_added', function(snapshot) {
 		console.log(`[firebase] new data for '${vehicle}': ${JSON.stringify(snapshot.val())}.`);
 
-		for (let light in lights.values()) {
-			if (distance(light, snapshot.toJSON()) < 88) {
+		lights.forEach(light => {
+			if (distance(light, snapshot.toJSON()) < 33) {
 				light.state = true
 				light.active = false
+
+				socket.clients.forEach(client => {
+					client.send(JSON.stringify({
+						type: "light",
+						data: light
+					}))
+				})
 			} else {
 				light.active = true
 			}
-		}
+		})
 
 		socket.clients.forEach(client => {
 			client.send(JSON.stringify({
