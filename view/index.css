@@ -10,3 +10,10 @@ html, body {
 	height: 100%;
 	width: 100%;
 }
+
+.speed_box {
+  border-radius: 10px;
+  border: 5px outset #808080;
+  background-color: #d3d3d3;
+  text-align: center;
+}

@@ -4,6 +4,21 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+L.Control.textbox = L.Control.extend({
+	onAdd: function(map) {
+		var text = L.DomUtil.create('div', 'speed_box');
+		text.id = "info_text";
+
+		text.innerHTML = '<font size="17">Speed: N/A km/h</font>'
+		return text;
+	},
+
+	onRemove: function(map) { }
+});
+
+L.control.textbox = function(opts) { return new L.Control.textbox(opts);}
+L.control.textbox({ position: 'topright' }).addTo(map);
+
 /* vehicle rendering? */
 
 let vehicles = {};
@@ -30,6 +45,8 @@ function updateVehicle(data) {
 	let lat = data.telemetry.lat;
 	let lon = data.telemetry.lon;
 	let newPosition = new L.LatLng(lat, lon);
+
+	document.getElementById("info_text").innerHTML = `<font size="17">Speed: ${data.telemetry.spd} km/h</font>`;
 
 	vehicles[data.id].setLatLng(newPosition);
 }
