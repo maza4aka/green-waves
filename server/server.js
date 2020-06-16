@@ -20,7 +20,9 @@ const config = {
 /* http, ws, routing, resources, etc. */
 
 const assets = {
-	test_vehicle: fs.readFileSync('view/assets/test_vehicle.gif')
+	test_vehicle: fs.readFileSync('view/assets/test_vehicle.gif');
+    green_light: fs.readFileSync('view/assets/green-light.png');
+    red_light: fs.readFileSync('view/assets/red-light.png');
 }
 
 // const favicon = fs.readFileSync('../favicon.png');
@@ -52,6 +54,16 @@ const server = http.createServer((req, res) => {
 			res.statusCode = 200;
 			res.setHeader('Content-Type', 'image/gif');
 			res.end(assets.test_vehicle);
+			break;
+        case '/assets/green-light.png':
+			res.statusCode = 200;
+			res.setHeader('Content-Type', 'image/png');
+			res.end(assets.green_light);
+			break;
+        case '/assets/red-light.png':
+			res.statusCode = 200;
+			res.setHeader('Content-Type', 'image/png');
+			res.end(assets.red_light);
 			break;
 		default:
 			res.statusCode = 404;
