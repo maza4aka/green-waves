@@ -114,14 +114,14 @@ let vehicles = {};
 let lights = require('../lights.json');
 
 setInterval(function() {
-	for light in lights {
+	for (let light in lights.values()) {
 		if (light.active) {
 			light.state = !light.state
 		}
 	}
 
 	socket.clients.forEach(client => {
-		clent.send(JSON.stringify({
+		client.send(JSON.stringify({
 			type: "light",
 			data: light
 		}))
@@ -132,7 +132,7 @@ function distance(_light, _vehicle) {
 	let R = 6378.137
     let dLat = _light.lat * Math.PI / 180 - _vehicle.lat * Math.PI / 180
     let dLon = _light.lon * Math.PI / 180 - _vehicle.lon * Math.PI / 180
-    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(_vehicle.lat * Math.PI / 180) * Math.cos(_lights.lat * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(_vehicle.lat * Math.PI / 180) * Math.cos(_light.lat * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
     let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     let d = R * c
     return d * 1000
@@ -149,7 +149,7 @@ db.on('child_added', function(snapshot) {
 	telemetry.on('child_added', function(snapshot) {
 		console.log(`[firebase] new data for '${vehicle}': ${JSON.stringify(snapshot.val())}.`);
 
-		for light in lights {
+		for (let light in lights.values()) {
 			if (distance(light, snapshot.toJSON()) < 88) {
 				light.state = true
 				light.active = false
@@ -159,7 +159,7 @@ db.on('child_added', function(snapshot) {
 		}
 
 		socket.clients.forEach(client => {
-			client.send(JSON.stringify(
+			client.send(JSON.stringify({
 				type: "telemetry",
 				data: {
 					id: vehicle,
