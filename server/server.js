@@ -113,6 +113,11 @@ let vehicles = {};
 
 let lights = require('../lights.json');
 
+lights.forEach(light => {
+		light.id = lights.indexOf(light)
+	}
+)
+
 setInterval(function() {
 	lights.forEach(light => {
 			if (light.active) {
