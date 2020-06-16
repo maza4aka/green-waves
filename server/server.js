@@ -121,10 +121,13 @@ setInterval(function() {
 	}
 
 	socket.clients.forEach(client => {
-		client.send(JSON.stringify({
-			type: "light",
-			data: light
-		}))
+		lights.forEach(light => {
+				client.send(JSON.stringify({
+					type: "light",
+					data: light
+				}))
+			}
+		)
 	})
 }, 13*1000)
 

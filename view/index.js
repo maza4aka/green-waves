@@ -57,9 +57,13 @@ socket.onopen = function connection(event) {
 socket.onmessage = function incoming(event) {
 	console.log(`[server] incoming message: ${JSON.stringify(event)}.`);
 
-	let data = JSON.parse(event.data);
+	let payload = JSON.parse(event.data);
 
-	telemetry(data);
+	if (payload.type == "telemetry") {
+		telemetry(payload.data);
+	} else if (payload.type == "light") {
+		console.dir(payload.data) // TODO
+	}
 };
 
 socket.onerror = function connection(event) {
